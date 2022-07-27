@@ -38,13 +38,14 @@ public class CustomerService {
 
     public List<CustomerDto> getCustomerByName(String name) {
         List<Customer> customers = customerRepository.findCustomerByName(name);
-        return customers.stream().map(customerDtoConverter::convert).collect(Collectors.toList());
+        return customerDtoConverter.convert(customers);
 
     }
 
     public CustomerDto getCustomerById(String id) {
         Optional<Customer> customer = customerRepository.findById(id);
-        return customer.map(customerDtoConverter::convert).orElseThrow(() -> new CustomerNotFoundException("Customer not found, id: " + customer.get().getId()));
+        return customer.map(customerDtoConverter::convert).orElseThrow(()
+                -> new CustomerNotFoundException("Customer not found, id: " + id));
     }
 
 }
