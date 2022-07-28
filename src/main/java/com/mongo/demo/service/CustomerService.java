@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,8 @@ public class CustomerService {
     private final CustomerDtoConverter customerDtoConverter;
 
     public List<CustomerDto> getAll() {
-        return customerRepository.findAll().stream().map(customerDtoConverter::convert).collect(Collectors.toList());
+        final List<Customer> customers = customerRepository.findAll();
+        return customerDtoConverter.convert(customers);
     }
 
     public CustomerDto save(CustomerCreateRequest request) {
